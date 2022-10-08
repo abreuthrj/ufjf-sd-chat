@@ -97,19 +97,47 @@ public class ChatApi implements IChatApi
     @Override
     public Response join(User user) 
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ChatApiResponse apiResponse = new ChatApiResponse();
+        
+        this.addUser(user);
+        
+        apiResponse.setStatusCode(200);
+        apiResponse.setStatus("OK");
+        apiResponse.setResponse("User joined");
+        
+        return Response
+                .ok(apiResponse)
+                .build();
     }
 
     @Override
     public Response leave(User user) 
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ChatApiResponse apiResponse = new ChatApiResponse();
+        
+        this.removeUser(user);
+        
+        apiResponse.setStatusCode(200);
+        apiResponse.setStatus("OK");
+        apiResponse.setResponse("User joined");
+        
+        return Response
+                .ok(apiResponse)
+                .build();
     }
     
-     @Override
+    @Override
     public Response listMessages() 
     {
-        throw new UnsupportedOperationException("Not supported yet.");
+        ChatApiResponse apiResponse = new ChatApiResponse();
+        
+        apiResponse.setStatusCode(200);
+        apiResponse.setStatus("OK");
+        apiResponse.setResponse(this.messages);
+        
+        return Response
+                .ok(apiResponse)
+                .build();
     }
 
     @Override
