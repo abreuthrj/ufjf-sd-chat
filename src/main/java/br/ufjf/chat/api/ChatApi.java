@@ -4,6 +4,7 @@ import br.ufjf.chat.exception.ChatException;
 import br.ufjf.chat.model.ChatResponse;
 import br.ufjf.chat.model.Message;
 import br.ufjf.chat.model.User;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -126,19 +127,30 @@ public class ChatApi implements IChatApi
     @Override
     public ChatResponse getUserChatMessages(String userId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        ArrayList<Message> messages = new ArrayList(getMessages());
+        ArrayList<Message> userMessages = new ArrayList();
+        
+        for(int i = 0; i < messages.size(); i++)
+            if(messages.get(i).getSenderId().equals(userId))
+                userMessages.add(messages.get(i));
+        
+        return getChatResponse(0, "OK", userMessages);
     }
 
     @Override
     public ChatResponse getChatMessages() 
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return getChatResponse(0, "OK", getMessages());
     }
 
     @Override
     public ChatResponse getChatMessage(String msgId) 
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+           return getChatResponse(0, "OK", getMessage(msgId)); 
+        }catch(ChatException exception) {
+           return getChatResponse(404, "NOT FOUND", null);
+        }
     }
 
     @Override
