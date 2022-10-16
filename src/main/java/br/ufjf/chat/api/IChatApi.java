@@ -24,13 +24,13 @@ public interface IChatApi
     @PutMapping(value = "/users/leave/{userId}", produces = "application/json")
     public ChatResponse leaveChat(@PathVariable("userId")String userId);
     
-    @GetMapping(value = "/messages/user/{userId}")
+    @GetMapping(value = "/users/messages/{userId}")
     public ChatResponse getUserChatMessages(@PathVariable("userId") String userId);
     
-    @GetMapping(value = "/messages")
+    @GetMapping(value = "/messages/list")
     public ChatResponse getChatMessages();
     
-    @GetMapping(value = "/messages/{msgId}")
+    @GetMapping(value = "/messages/get/{msgId}")
     public ChatResponse getChatMessage(@PathVariable("msgId") String msgId);
     
     public ChatResponse sendChatMessage(@RequestBody Message msg);
