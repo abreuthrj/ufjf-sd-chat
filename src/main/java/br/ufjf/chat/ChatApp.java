@@ -3,6 +3,7 @@ package br.ufjf.chat;
 import br.ufjf.chat.client.ChatClient;
 import br.ufjf.chat.model.ChatResponse;
 import br.ufjf.chat.model.User;
+import br.ufjf.chat.model.Message;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -74,6 +75,7 @@ public class ChatApp
                 System.out.println("[8] - deleteChatMessage");
                 System.out.println("[0] - Exit");
                 opMenu = scanner.nextInt();
+                scanner.nextLine();
                 
                 switch(opMenu)
                 {
@@ -117,6 +119,92 @@ public class ChatApp
                         {
                             showApiResponse(
                                     chatClient.leaveChat(localUser.getId())
+                            );
+                        }
+                        catch (MalformedURLException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (URISyntaxException | InterruptedException | IOException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    case 5: 
+                    {
+                        try
+                        {
+                            showApiResponse(
+                                    chatClient.chatMessages()
+                            );
+                        }
+                        catch (MalformedURLException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (URISyntaxException | InterruptedException | IOException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    case 6: 
+                    {
+                        try
+                        {
+                            String msgId;
+                            
+                            System.out.println("Informe o id da mensagem: ");
+                            msgId = scanner.next();
+                            showApiResponse(
+                                    chatClient.getChatMessage(msgId)
+                            );
+                        }
+                        catch (MalformedURLException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (URISyntaxException | InterruptedException | IOException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    case 7: 
+                    {
+                        try
+                        {
+                            String message;
+                            String recipientId;
+                            
+                            System.out.println("Informe o id do destinatário: ");
+                            recipientId = scanner.nextLine();
+                            System.out.println("Informe a mensagem: ");
+                            message = scanner.nextLine();
+                            
+                            Message msg = new Message(localUser.getId(), recipientId, message);
+                            
+                            showApiResponse(
+                                    chatClient.sendChatMessage(msg)
+                            );
+                        }
+                        catch (MalformedURLException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        } catch (URISyntaxException | InterruptedException | IOException ex)
+                        {
+                            Logger.getLogger(ChatApp.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                        break;
+                    }
+                    case 8: 
+                    {
+                        try
+                        {
+                            String msgId;
+                            
+                            System.out.println("Informe o id da mensagem: ");
+                            msgId = scanner.nextLine();
+                            showApiResponse(
+                                    chatClient.deleteChatMessage(msgId)
                             );
                         }
                         catch (MalformedURLException ex)

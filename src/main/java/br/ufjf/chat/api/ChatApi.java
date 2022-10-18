@@ -156,12 +156,30 @@ public class ChatApi implements IChatApi
     @Override
     public ChatResponse sendChatMessage(Message msg)
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean recipientExists = containsUser(msg.getRecipientId());
+        if(recipientExists)
+        {
+            addMessage(msg);
+            return getChatResponse(0, "OK", null);
+        }
+        else
+        {
+            return getChatResponse(404, "RECIPIENT NOT FOUND", null);
+        }
     }
 
     @Override
     public ChatResponse deleteChatMessage(String msgId)
     {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean messageExists = containsMessage(msgId);
+        if(messageExists)
+        {
+            removeMessage(msgId);
+            return getChatResponse(0, "OK", null);
+        }
+        else
+        {
+            return getChatResponse(404, "MESSAGE NOT FOUND", null);
+        }
     }
 }

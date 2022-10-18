@@ -1,6 +1,7 @@
 package br.ufjf.chat.client;
 
 import br.ufjf.chat.model.ChatResponse;
+import br.ufjf.chat.model.Message;
 import br.ufjf.chat.model.User;
 import com.google.gson.Gson;
 import java.io.IOException;
@@ -100,5 +101,73 @@ public class ChatClient
                         HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
         
         return new Gson().fromJson(response.body(), ChatResponse.class);
+    }
+    
+    public ChatResponse chatMessages() 
+            throws MalformedURLException, URISyntaxException, IOException, InterruptedException
+    {
+        HttpResponse<String> response
+                = sendHttpRequest(
+                        buildHttpRequest(
+                                "/messages/list",
+                                HttpMethod.GET,
+                                HttpRequest.BodyPublishers.noBody()
+                        ),
+                        HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        
+        return new Gson().fromJson(response.body(), ChatResponse.class);
+    }
+    
+    public ChatResponse getChatMessage(String msgId) 
+            throws MalformedURLException, URISyntaxException, IOException, InterruptedException
+    {
+        Gson gson = new Gson();
+        
+        HttpResponse<String> response
+                = sendHttpRequest(
+                        buildHttpRequest(
+                                String.format("/messages/get/%s", msgId),
+                                HttpMethod.GET,
+                                HttpRequest.BodyPublishers.noBody()
+                        ),
+                        HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        
+        return gson.fromJson(response.body(), ChatResponse.class);
+    }
+    
+     public ChatResponse sendChatMessage(Message msg) 
+            throws MalformedURLException, URISyntaxException, IOException, InterruptedException
+    {
+        Gson gson = new Gson();
+        
+        HttpResponse<String> response
+                = sendHttpRequest(
+                        buildHttpRequest(
+                                "/messages/send",
+                                HttpMethod.POST,
+                                HttpRequest.BodyPublishers.ofString(
+                                        gson.toJson(msg)
+                                )
+                        ),
+                        HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        
+        return gson.fromJson(response.body(), ChatResponse.class);
+    }
+     
+     public ChatResponse deleteChatMessage(String msgId) 
+            throws MalformedURLException, URISyntaxException, IOException, InterruptedException
+    {
+        Gson gson = new Gson();
+        
+        HttpResponse<String> response
+                = sendHttpRequest(
+                        buildHttpRequest(
+                                String.format("/messages/delete/%s", msgId),
+                                HttpMethod.DELETE,
+                                HttpRequest.BodyPublishers.noBody()
+                        ),
+                        HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
+        
+        return gson.fromJson(response.body(), ChatResponse.class);
     }
 }
