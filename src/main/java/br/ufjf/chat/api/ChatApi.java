@@ -4,7 +4,6 @@ import br.ufjf.chat.exception.ChatException;
 import br.ufjf.chat.model.ChatResponse;
 import br.ufjf.chat.model.Message;
 import br.ufjf.chat.model.User;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -127,59 +126,30 @@ public class ChatApi implements IChatApi
     @Override
     public ChatResponse getUserChatMessages(String userId)
     {
-        ArrayList<Message> messages = new ArrayList(getMessages());
-        ArrayList<Message> userMessages = new ArrayList();
-        
-        for(int i = 0; i < messages.size(); i++)
-            if(messages.get(i).getSenderId().equals(userId))
-                userMessages.add(messages.get(i));
-        
-        return getChatResponse(0, "OK", userMessages);
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChatResponse getChatMessages() 
     {
-        return getChatResponse(0, "OK", getMessages());
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChatResponse getChatMessage(String msgId) 
     {
-        try {
-           return getChatResponse(0, "OK", getMessage(msgId)); 
-        }catch(ChatException exception) {
-           return getChatResponse(404, "NOT FOUND", null);
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChatResponse sendChatMessage(Message msg)
     {
-        boolean recipientExists = containsUser(msg.getRecipientId());
-        if(recipientExists)
-        {
-            addMessage(msg);
-            return getChatResponse(0, "OK", null);
-        }
-        else
-        {
-            return getChatResponse(404, "RECIPIENT NOT FOUND", null);
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
     public ChatResponse deleteChatMessage(String msgId)
     {
-        boolean messageExists = containsMessage(msgId);
-        if(messageExists)
-        {
-            removeMessage(msgId);
-            return getChatResponse(0, "OK", null);
-        }
-        else
-        {
-            return getChatResponse(404, "MESSAGE NOT FOUND", null);
-        }
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
