@@ -1,57 +1,22 @@
 package br.ufjf.chat;
 
-import java.io.IOException;
-import java.net.Socket;
-import java.net.ServerSocket;
-import java.util.ArrayList;
-import java.util.List;
-import javax.websocket.OnMessage;
-import javax.websocket.server.ServerEndpoint;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.MessageBrokerRegistry;
+import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
+import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
+import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
 
-@ServerEndpoint("/")
-public class SocketApp {
-    private ServerSocket server;
-    private boolean finishSignal;
+@Configuration
+@EnableWebSocketMessageBroker
+public class SocketApp implements WebSocketMessageBrokerConfigurer{
     
-    public SocketApp(int port) throws IOException
-    {
-        this.server = new ServerSocket(port);
-        System.out.println("Server started on port: " + port);
-        
-        this.finishSignal = false;
-        this.listenToClients();
+    @Override
+    public void registerStompEndpoints(StompEndpointRegistry registry) {
+        registry.addEndpoint("/ws").withSockJS();
     }
-    
-    @OnMessage
-    public String receiveMessage(String message) {
-        System.out.println("MESSAGE RECEIVED: " + message);
-        
-        return message;
-    }
-    
-    private void listenToClients()
-    {
-        ArrayList<Socket> clients = new ArrayList<Socket>();
-        
-        while(true) 
-        {
-            if(this.finishSignal) {
-                break;
-            }
-            
-            try
-            {
-                Socket client = this.server.accept();
-                clients.add(client);
-            } catch(Exception e)
-            {
-                System.out.println("Failed to accept connection: " + e.getMessage());
-            }
-        }
-    }
-    
-    public void stop()
-    {
-        this.finishSignal = true;
+
+    @Override
+    public void configureMessageBroker(MessageBrokerRegistry registry) {
+        registry.enableSimpleBroker("/all");
     }
 }

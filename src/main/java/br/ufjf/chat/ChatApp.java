@@ -3,8 +3,8 @@ package br.ufjf.chat;
 import br.ufjf.chat.client.ChatClient;
 import br.ufjf.chat.model.ChatResponse;
 import br.ufjf.chat.model.User;
-import br.ufjf.chat.SocketApp;
 import br.ufjf.chat.client.SocketClient;
+import br.ufjf.chat.model.Message;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
@@ -13,10 +13,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import javax.websocket.OnMessage;
-import javax.websocket.server.ServerEndpoint;
-import java.net.ServerSocket;
-import java.net.Socket;
 
 @SpringBootApplication
 public class ChatApp
@@ -27,8 +23,7 @@ public class ChatApp
     {
         System.out.println("[1] - API Server");
         System.out.println("[2] - API Client");
-        System.out.println("[3] - WebSocket Server");
-        System.out.println("[4] - WebSocket Client");
+        System.out.println("[3] - WebSocket Client");
         
         return scanner.nextInt();
     }
@@ -36,11 +31,6 @@ public class ChatApp
     private static void runApiServer(String[] args)
     {
         SpringApplication.run(ChatApp.class, args);
-    }
-    
-    public static void runWebSocketServer(String[] args) throws IOException
-    {
-        SocketApp socket = new SocketApp(8080);
     }
     
     private static void showApiResponse(ChatResponse chatResponse)
@@ -168,11 +158,13 @@ public class ChatApp
         String username = scanner.next();
         System.out.println("Informe o IP do chat: ");
         String ip = scanner.next();
-        System.out.println("Informe a porta do chat: ");
+        System.out.println("Informe a porta do chat: ");;
         int port = scanner.nextInt();
 
         User localUser = new User(username, ip, port);
-        SocketClient socketClient = new SocketClient();
+        SocketClient client = new SocketClient(ip, port);
+
+        new Scanner(System.in).nextLine(); // Don't close immediately.
 
         do
         {
@@ -218,8 +210,8 @@ public class ChatApp
                 }
                 case 7: 
                 {
-                    String message = scanner.next();
-                    socketClient.sendMessage(message);
+                    Message message = new Message(localUser.getId(), "all", scanner.next());
+                    client.send(message);
                 }
                 case 8: 
                 {
@@ -234,14 +226,14 @@ public class ChatApp
                     System.out.println("Opção inválida");
                 }
             }
-        }catch(IOException exception){
+        }catch(Exception exception){
             System.out.println("Error");
         }
         
         } while(again);
     }
     
-    public static void main(String[] args) 
+    public static void main(String[] args)
     {
         int opMenu = showMenu();
         
@@ -258,11 +250,6 @@ public class ChatApp
                 break;
             }
             case 3:
-            {
-                runWebSocketServer(args);
-                break;
-            }
-            case 4:
             {
                 runWebSocketClient();
                 break;
