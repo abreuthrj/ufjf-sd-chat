@@ -152,7 +152,6 @@ public class ChatApp
     private static void runWebSocketClient()
     {
         boolean again = true;
-        int opMenu;
 
         System.out.println("Informe o nome do usuário do chat: ");
         String username = scanner.next();
@@ -166,7 +165,8 @@ public class ChatApp
 
         do
         {
-            Message message = new Message(localUser.getId(), "all", scanner.next(), Message.MESSAGE_TYPE.MESSAGE);
+            String content = scanner.nextLine();
+            Message message = new Message(localUser.getId(), localUser.getName(), "all", content, Message.MESSAGE_TYPE.MESSAGE);
         try {
             client.send(message);
         }catch(Exception e){

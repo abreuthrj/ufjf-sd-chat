@@ -41,7 +41,7 @@ public class CustomSessionHandler implements StompSessionHandler
                 return;
             }
             
-            System.out.println("Received: " + message.getMessage());
+            System.out.println(message.getSenderName() + ": " +  message.getMessage());
         }
     }
 
@@ -50,7 +50,7 @@ public class CustomSessionHandler implements StompSessionHandler
         this.session = session;
         
         session.subscribe("/all", this);
-        session.send("/join", new Message(user.getId(), "all", "User " + user.getName() + " joined!", Message.MESSAGE_TYPE.CONNECTION));
+        session.send("/join", new Message(user.getId(), user.getName(), "all", "User " + user.getName() + " joined!", Message.MESSAGE_TYPE.CONNECTION));
         
         System.out.println("Type your message:");
     }

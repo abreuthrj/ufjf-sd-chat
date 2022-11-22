@@ -18,6 +18,8 @@ public class Message
     
     private String senderId;
     
+    private String senderName;
+    
     private String recipientId;
     
     private String message;
@@ -28,23 +30,26 @@ public class Message
     {
         this.id = UUID.randomUUID().toString();
         this.senderId = null;
+        this.senderName = null;
         this.message = null;
         this.type = Message.MESSAGE_TYPE.UNDEFINED;
     }
     
-    public Message(String senderId, String recipientId, String message)
+    public Message(String senderId, String senderName, String recipientId, String message)
     {
         this.id = UUID.randomUUID().toString();
         this.senderId = senderId;
+        this.senderName = senderName;
         this.recipientId = recipientId;
         this.message = message;
         this.type = Message.MESSAGE_TYPE.UNDEFINED;
     }
     
-    public Message(String senderId, String recipientId, String message, MESSAGE_TYPE type)
+    public Message(String senderId, String senderName, String recipientId, String message, MESSAGE_TYPE type)
     {
         this.id = UUID.randomUUID().toString();
         this.senderId = senderId;
+        this.senderName = senderName;
         this.recipientId = recipientId;
         this.message = message;
         this.type = type;
@@ -62,6 +67,14 @@ public class Message
     public void setSenderId(String senderId) 
     {
         this.senderId = senderId;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
     
     public String getRecipientId()
@@ -88,5 +101,4 @@ public class Message
     {
         return this.type;
     }
-    
 }
