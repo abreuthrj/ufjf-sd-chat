@@ -8,6 +8,12 @@ import java.util.UUID;
  */
 public class Message
 {
+    public static enum MESSAGE_TYPE {
+        UNDEFINED,
+        CONNECTION,
+        MESSAGE,
+    }
+    
     private final String id;
     
     private String senderId;
@@ -16,11 +22,14 @@ public class Message
     
     private String message;
     
+    private MESSAGE_TYPE type;
+    
     public Message()
     {
         this.id = UUID.randomUUID().toString();
         this.senderId = null;
         this.message = null;
+        this.type = Message.MESSAGE_TYPE.UNDEFINED;
     }
     
     public Message(String senderId, String recipientId, String message)
@@ -29,6 +38,16 @@ public class Message
         this.senderId = senderId;
         this.recipientId = recipientId;
         this.message = message;
+        this.type = Message.MESSAGE_TYPE.UNDEFINED;
+    }
+    
+    public Message(String senderId, String recipientId, String message, MESSAGE_TYPE type)
+    {
+        this.id = UUID.randomUUID().toString();
+        this.senderId = senderId;
+        this.recipientId = recipientId;
+        this.message = message;
+        this.type = type;
     }
 
     public String getId() {
@@ -63,6 +82,11 @@ public class Message
     public void setMessage(String message) 
     {
         this.message = message;
+    }
+    
+    public MESSAGE_TYPE getType()
+    {
+        return this.type;
     }
     
 }

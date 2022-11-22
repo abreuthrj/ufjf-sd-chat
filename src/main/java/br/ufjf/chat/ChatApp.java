@@ -158,76 +158,19 @@ public class ChatApp
         String username = scanner.next();
         System.out.println("Informe o IP do chat: ");
         String ip = scanner.next();
-        System.out.println("Informe a porta do chat: ");;
+        System.out.println("Informe a porta do chat: ");
         int port = scanner.nextInt();
 
         User localUser = new User(username, ip, port);
-        SocketClient client = new SocketClient(ip, port);
-
-        new Scanner(System.in).nextLine(); // Don't close immediately.
+        SocketClient client = new SocketClient(localUser);
 
         do
         {
-            System.out.println();
-            System.out.println("[1] - chatUsers");
-            System.out.println("[2] - joinChat");
-            System.out.println("[3] - leaveChat");
-            System.out.println("[3] - leaveChat");
-            System.out.println("[4] - getUserChatMessages");
-            System.out.println("[5] - getChatMessages");
-            System.out.println("[6] - getChatMessage");
-            System.out.println("[7] - sendChatMessage");
-            System.out.println("[8] - deleteChatMessage");
-            System.out.println("[0] - Exit");
-            opMenu = scanner.nextInt();
-
-            try {
-            switch(opMenu)
-            {
-                case 1: 
-                {
-                    
-                }
-                case 2:
-                {
-
-                }
-                case 3: 
-                {
-
-                }
-                case 4: 
-                {
-
-                }
-                case 5: 
-                {
-
-                }
-                case 6: 
-                {
-
-                }
-                case 7: 
-                {
-                    Message message = new Message(localUser.getId(), "all", scanner.next());
-                    client.send(message);
-                }
-                case 8: 
-                {
-
-                }
-                case 0: 
-                {
-                    again = false;
-                    break;
-                }
-                default: {
-                    System.out.println("Opção inválida");
-                }
-            }
-        }catch(Exception exception){
-            System.out.println("Error");
+            Message message = new Message(localUser.getId(), "all", scanner.next(), Message.MESSAGE_TYPE.MESSAGE);
+        try {
+            client.send(message);
+        }catch(Exception e){
+            System.out.println("Error: " + e.getMessage());
         }
         
         } while(again);
